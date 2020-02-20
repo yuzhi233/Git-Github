@@ -8,7 +8,9 @@
 
 ​        参考文章 https://www.jianshu.com/p/3ef797fcb17d
 
-### 第一步（当然默认GIT装完了）
+### 第一步
+
+默认GIT装完了（装GIT就不写了）
 
 要想本地和github完成连接，嗯，首先先创建连接（废话），这里是学人家用SSH创建一个本地连接SSHkey
 
@@ -32,7 +34,7 @@ ssh-keygen -t rsa -C "邮件地址"// 填写你的github注册邮箱
 
 这o.pub这个是我们需要的，右键notepad++打开复制一下SSHkey完事。
 
-## 第二步
+### 第二步
 
 点击头像下的setting
 
@@ -129,3 +131,43 @@ git log
 git push
 ~~~
 
+
+
+### Git用法补充（遇到的）
+
+2020/2/20 今天学习的时候又碰到的问题，使用git上传文件时候不小心上传了超过100M的，导致commit以及以后的git push报错，无法更新云端，反正错误大概看出来是由于上传文件过大导致。
+
+最后先还原了之前的版本
+
+**还原之前版本**
+
+~~~git
+git log  #查看commit的信息，找到之前一个合适的版本 记录下hash值
+~~~
+
+~~~git
+git reset --hard a518cef96b4dfe592139f4187bbd2656e532369a #然后repo就会变成你选择的那个版本
+~~~
+
+这tm才是git的精髓好8 ,  = =...趁机又了解了咋还原版本  不得不说git挺方便的
+
+但是.....还原后我把原来仓库文件索性直接删完，又复制了最新的文件进去，但是push还是报错
+
+error: failed to push some refs to 'git@github.com:yuzhi233/PytorchStudy.git'
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
+查网，大概是你本地repo与云端差异太大了，git貌似会认为你push错了？？就不让你push
+
+。。所以我又搜到了  
+
+**强行push，本地为基础覆盖云端**：
+
+~~~git
+git push -f #强力
+~~~
+
+然后云端正常了。。以后还是尽量不要上传大于100M的太麻烦了。
